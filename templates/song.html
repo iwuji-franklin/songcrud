@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block site_wrapper %}
+{% include "navbar.html" %}
+<div class="main">
+    <div class="content">
+        <h1>{{ song.title | upper }}</h1>
+        <p>Was created on: <em>{{song.date_released}}</em> By: {{song.artiste.first_name}} {{song.artiste.last_name}}</p>
+        <br/><br/>
+        <h3>Lyrics</h3>
+        {% for lyrics in lyrics %}
+            <p>{{ lyrics.content | linebreaks }}</p>
+        {% endfor %}
+        <form method="post" action="{% url 'musicapp:song_detail' song.slug %}" class="cart">
+            {% csrf_token %}
+            <input type="hidden" name="item_id" value="{{ song.id }}" />
+            <input type="submit" id="button" name="submit" value="Remove" />
+        </form>
+    </div>
+    
+    <div class="form">
+        <form method="post" action="{% url 'musicapp:song_detail' song.slug %}" class="cart">
+            {% csrf_token %}
+            <label for="title">Title:<input type="text" name="title" value="{{ song.title }}" /></label>
+            {% for lyrics in lyrics %}
+                <label for="description">Lyrics Content:<input type="textarea" name="description" value="{{ lyrics.content }}" /></label>
+            {% endfor %}
+            <label for="due_date">Date Released:<input type="date" name="due_date" value="{{song.date_released}}" /></label>
+            <input type="hidden" name="item_id" value="{{ song.id }}" />
+            
+            <input type="submit" id="button" name="submit" value="Update" />
+        </form>
+    </div>
+</div>    
+<div id="related_song">
+    {% if songs %}
+    <h2>Other songs by the same artiste</h2>
+    
+    <table class="content">
+        <caption>ALL SONGS</caption>
+        <thead>
+            <th><h1>Artiste Name</h1></td>
+            <hr>
+            <th><h1>Song Title</h1></td>
+            <hr>
+        </thead>
+        <tbody>
+        {% for song in songs %}
+            <tr>
+                <td>
+                    <p>By: {{ song.artiste_id.first_name}} {{ song.artiste_id.last_name}}</p><hr>
+                </td>
+                <td class="each_song">
+                    <a href="{% url 'musicapp:song_detail' song.slug %}">
+                        <h1>{{ song.title | upper }}</h1>
+                        <p>Created on: {{song.date_released}}</p>
+                        <p>{{ song.lyrics.content | linebreaks }}</p>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </div>
+        
+    </table>
+    {% else %}
+        <h2>No related song</h2>
+    {% endif %}
+    
+</div>    
+
+{% endblock %}

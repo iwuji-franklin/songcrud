@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block site_wrapper %}
+{% include "navbar.html" %}
+<div class="main">
+    <div class="content">
+        <h1>{{ artiste.first_name | upper }} {{artiste.last_name | upper}}</h1>
+        <br/><br/>
+        
+    </div>
+    {% if songs %}
+    <h2>Songs by: {{ artiste.first_name }} {{artiste.last_name}}</h2>
+    <table class="content">
+        <thead>
+            <th><h1>Song Title</h1></td>
+            <hr>
+        </thead>
+        <tbody>
+        {% for song in songs %}
+            <tr>
+                <td class="each_song">
+                    <a href="{% url 'musicapp:song_detail' song.slug %}">
+                        <h1>{{ song.title | upper }}</h1>
+                        <p>Created on: {{song.date_released}}</p>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </div>
+        
+    </table>
+    {% else %}
+        <h2>No Songs yet...</h2>
+    {% endif %}
+    
+</div>    
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block site_wrapper %}
+{% include "navbar.html" %}
+<div class="main">
+    <table class="content">
+        <caption>ALL SONGS({{total_song}})</caption>
+        <thead>
+            <th><h1>Artiste Name</h1></td>
+            <hr>
+            <th><h1>Song Title</h1></td>
+            <hr>
+        </thead>
+        <tbody>
+        {% for song in songs %}
+            <tr>
+                <td>
+                    
+                        <p>
+                            <a href="{% url 'musicapp:artiste_detail' song.artiste_id.first_name %}">
+                                By: {{ song.artiste_id.first_name}} {{ song.artiste_id.last_name}}
+                            </a>
+                        </p><hr>
+                    </a>
+                </td>
+                <td class="each_task">
+                    <a href="{% url 'musicapp:song_detail' song.slug %}">
+                        <h1>{{ song.title | upper }}</h1>
+                        <p>Created on: {{song.date_released}}</p>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </div>
+        
+    </table>
+    <div class="form">
+        <div>
+            <h2>ALL ARTISTE ({{total_artiste}})</h2>
+            {% for artiste in artiste %}
+            <a href="{% url 'musicapp:artiste_detail' artiste.first_name %}">
+                <h3>{{ artiste.first_name }} {{artiste.last_name}}</h3>
+            </a>
+            {% endfor %}
+        </div>    
+    </div>
+</div>
+{% endblock %}
